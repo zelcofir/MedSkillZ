@@ -50,3 +50,46 @@
 .slider-nav a:hover {
     opacity: 1;
 }
+
+@media (max-width: 1500px) {
+    .slider-wrapper {
+        width: 100%;
+        height: auto;
+    }
+
+    .slider {
+        aspect-ratio: auto;
+        height: auto;
+    }
+
+    .slider img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .slider-wrapper {
+        width: 100%;
+        height: auto;
+    }
+
+    .slider {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .slider img {
+        width: 100%;
+        height: auto;
+    }
+
+    .slider-nav {
+        bottom: 0.75rem;
+    }
+
+    .slider-nav a {
+        width: 0.75rem;
+        height: 0.75rem;
+    }
+}
