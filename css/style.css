@@ -75,14 +75,18 @@
     }
 
     .slider {
-        flex-direction: column;
-        height: auto;
+        display: flex;
+        overflow-x: scroll;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
     }
 
     .slider img {
         flex: 1 0 100%;
         scroll-snap-align: start;
         object-fit: cover;
+        width: 100%;
+        height: auto;
     }
 
     .slider-nav {
