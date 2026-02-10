@@ -22,7 +22,7 @@ export function ConvocatoriaBanner() {
   }, [])
 
   return (
-    <section id="convocatoria" className="bg-background py-20 md:py-28">
+    <section id="convocatoria" className="bg-background py-12 md:py-16">
       <div
         ref={ref}
         className={cn(
@@ -33,7 +33,7 @@ export function ConvocatoriaBanner() {
         <div className="overflow-hidden rounded-3xl bg-primary shadow-2xl">
           <div className="grid items-center md:grid-cols-2">
             {/* Text Side */}
-            <div className="flex flex-col justify-center px-8 py-12 md:px-14 md:py-16">
+            <div className="flex flex-col justify-center px-8 py-8 md:px-14 md:py-12">
               <div className="inline-flex w-fit items-center gap-2 rounded-full bg-primary-foreground/20 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary-foreground">
                 <CalendarDays className="h-4 w-4" />
                 Convocatoria abierta
@@ -92,7 +92,7 @@ export function ConvocatoriaBanner() {
                   src="/Grupo_Reportes_Caso.jpg"
                   alt="Grupo de Reportes de Caso - Equipo de profesionales médicos colaborando"
                   fill
-                  className="object-cover"
+                  className="object-contain"
                 />
               </div>
             </div>

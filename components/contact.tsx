@@ -14,7 +14,7 @@ const contactInfo = [
     icon: Mail,
     label: "Email",
     value: "medskillz.empresa@gmail.com",
-    href: "mailto:kallpahub@gmail.com",
+    href: "mailto:medskillz.empresa@gmail.com",
   },
   {
     icon: Phone,
@@ -86,13 +86,14 @@ export function Contact() {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <span className="inline-block px-4 py-1.5 rounded-full bg-kallpa-gold/10 text-kallpa-gold text-sm font-medium mb-4">
+          <span className="inline-block px-4 py-1.5 rounded-full bg-kallpa-gold/10 text-kallpa-gold text-sm font-semibold mb-4">
             Contacto
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-kallpa-navy mb-4">
-            ¿Listo para comenzar? Hablemos de tu proyecto.
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-kallpa-navy mb-6">
+            ¿Listo para{" "}
+            <span className="text-kallpa-cyan">comenzar?</span>
           </h2>
-          <p className="text-lg text-kallpa-ocean max-w-2xl mx-auto">
+          <p className="text-lg text-kallpa-ocean max-w-2xl mx-auto leading-relaxed">
             Agenda tu consultoría gratuita y descubre cómo podemos 
             potenciar tu organización.
           </p>
@@ -108,7 +109,7 @@ export function Contact() {
             <h3 className="text-2xl font-bold text-kallpa-navy mb-6">
               Información de Contacto
             </h3>
-            <p className="text-kallpa-ocean mb-8">
+            <p className="text-kallpa-ocean mb-8 leading-relaxed">
               Estamos aquí para ayudarte. Contáctanos por cualquiera de estos medios 
               y te responderemos en menos de 24 horas.
             </p>
@@ -122,22 +123,22 @@ export function Contact() {
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
                 >
-                  <Card className="p-4 border-0 bg-secondary/50 hover:bg-secondary transition-colors">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 rounded-xl bg-kallpa-cyan/10">
+                  <Card className="p-4 border-0 bg-secondary/50 hover:bg-secondary hover:shadow-md transition-all duration-300">
+                    <div className="flex items-start gap-4">
+                      <div className="p-3 rounded-lg bg-kallpa-cyan/10 flex-shrink-0">
                         <info.icon className="w-5 h-5 text-kallpa-cyan" />
                       </div>
-                      <div>
-                        <p className="text-sm text-muted-foreground">{info.label}</p>
+                      <div className="flex-1">
+                        <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wide">{info.label}</p>
                         {info.href ? (
                           <a
                             href={info.href}
-                            className="text-kallpa-navy font-medium hover:text-kallpa-cyan transition-colors"
+                            className="text-kallpa-navy font-semibold hover:text-kallpa-cyan transition-colors inline-block mt-1"
                           >
                             {info.value}
                           </a>
                         ) : (
-                          <p className="text-kallpa-navy font-medium">{info.value}</p>
+                          <p className="text-kallpa-navy font-semibold mt-1">{info.value}</p>
                         )}
                       </div>
                     </div>
@@ -146,18 +147,7 @@ export function Contact() {
               ))}
             </div>
 
-            {/* Map or Additional Info */}
-            <Card className="p-6 border-0 bg-gradient-to-br from-kallpa-navy to-kallpa-ocean text-white">
-              <h4 className="text-lg font-bold mb-2">Consultoría Gratuita</h4>
-              <p className="text-white/80 text-sm mb-4">
-                Primera sesión de 30 minutos sin costo para conocer tus necesidades 
-                y presentarte nuestras soluciones.
-              </p>
-              <div className="flex items-center gap-2 text-kallpa-cyan">
-                <CheckCircle className="w-5 h-5" />
-                <span className="text-sm font-medium">Sin compromiso</span>
-              </div>
-            </Card>
+           
           </motion.div>
 
           {/* Contact Form */}
@@ -166,8 +156,8 @@ export function Contact() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
           >
-            <Card className="p-6 lg:p-8 border-0 shadow-xl bg-background">
-              <h3 className="text-xl font-bold text-kallpa-navy mb-6">
+            <Card className="p-6 lg:p-8 border border-border/50 shadow-lg bg-background">
+              <h3 className="text-2xl font-bold text-kallpa-navy mb-6">
                 Envíanos un mensaje
               </h3>
 
@@ -189,7 +179,7 @@ export function Contact() {
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-5">
-                  <input type="hidden" name="subject" value="Nuevo contacto desde la Web Kallpa Hub" />
+                  <input type="hidden" name="subject" value="Nuevo contacto desde la Web MedSkillZ" />
                   
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -201,7 +191,7 @@ export function Contact() {
                         name="nombre"
                         placeholder="Tu nombre completo"
                         required
-                        className="border-border focus:border-kallpa-cyan focus:ring-kallpa-cyan/20"
+                        className="border border-border focus:border-kallpa-cyan focus:ring-2 focus:ring-kallpa-cyan/20 transition-all"
                       />
                     </div>
                     <div className="space-y-2">
@@ -214,7 +204,7 @@ export function Contact() {
                         type="email"
                         placeholder="tu@email.com"
                         required
-                        className="border-border focus:border-kallpa-cyan focus:ring-kallpa-cyan/20"
+                        className="border border-border focus:border-kallpa-cyan focus:ring-2 focus:ring-kallpa-cyan/20 transition-all"
                       />
                     </div>
                   </div>
@@ -230,7 +220,7 @@ export function Contact() {
                         type="tel"
                         placeholder="+51 999 999 999"
                         required
-                        className="border-border focus:border-kallpa-cyan focus:ring-kallpa-cyan/20"
+                        className="border border-border focus:border-kallpa-cyan focus:ring-2 focus:ring-kallpa-cyan/20 transition-all"
                       />
                     </div>
                     <div className="space-y-2">
@@ -242,7 +232,7 @@ export function Contact() {
                         name="asunto"
                         placeholder="¿En qué podemos ayudarte?"
                         required
-                        className="border-border focus:border-kallpa-cyan focus:ring-kallpa-cyan/20"
+                        className="border border-border focus:border-kallpa-cyan focus:ring-2 focus:ring-kallpa-cyan/20 transition-all"
                       />
                     </div>
                   </div>
@@ -255,15 +245,15 @@ export function Contact() {
                       id="mensaje"
                       name="mensaje"
                       placeholder="Cuéntanos sobre tu proyecto u organización..."
-                      rows={4}
-                      className="border-border focus:border-kallpa-cyan focus:ring-kallpa-cyan/20 resize-none"
+                      rows={5}
+                      className="border border-border focus:border-kallpa-cyan focus:ring-2 focus:ring-kallpa-cyan/20 resize-none transition-all"
                     />
                   </div>
 
                   <Button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full bg-kallpa-cyan hover:bg-kallpa-gold text-white shadow-lg shadow-kallpa-cyan/25 hover:shadow-kallpa-gold/25 transition-all"
+                    className="w-full bg-[#6D28D9] hover:bg-[#6D28D9]/90 text-white font-semibold shadow-lg shadow-[#6D28D9]/30 hover:shadow-[#6D28D9]/40 transition-all duration-300 disabled:opacity-70"
                   >
                     {isLoading ? (
                       <span className="flex items-center gap-2">
