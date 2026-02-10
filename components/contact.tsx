@@ -49,7 +49,7 @@ export function Contact() {
     const formData = new FormData(form)
     
     // Tu Access Key de Web3Forms
-    formData.append("access_key", "50b62e75-b873-4bfd-b34d-988c4311ddc2")
+    formData.append("access_key", "45e81d61-59fe-4a17-8f78-0254670ce47e")
 
     try {
       const response = await fetch("https://api.web3forms.com/submit", {
