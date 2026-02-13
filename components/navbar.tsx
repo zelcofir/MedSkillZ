@@ -8,10 +8,11 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 const navLinks = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Servicios", href: "#servicios" },
-  { label: "Investigación", href: "#convocatoria" },
-  { label: "Nosotros", href: "#nosotros" },
+  { label: "Inicio", href: "/#inicio" },
+  { label: "Servicios", href: "/#servicios" },
+  { label: "Investigación", href: "/#convocatoria" },
+  { label: "Tarifario", href: "/pricing" },
+  { label: "Nosotros", href: "/#nosotros" },
 ]
 
 export function Navbar() {
@@ -20,7 +21,7 @@ export function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
-        <Link href="#inicio" className="flex items-center gap-2">
+        <Link href="/#inicio" className="flex items-center gap-2">
           <Image
             src="/logo1.png"
             alt="MedSkillz logo"
@@ -46,7 +47,7 @@ export function Navbar() {
 
         <div className="hidden md:block">
           <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
-            <Link href="#contacto">Contacto</Link>
+            <Link href="/#contacto">Contacto</Link>
           </Button>
         </div>
 
@@ -82,7 +83,7 @@ export function Navbar() {
           ))}
           <li>
             <Button asChild className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-              <Link href="#contacto" onClick={() => setMobileOpen(false)}>
+              <Link href="/#contacto" onClick={() => setMobileOpen(false)}>
                 Contacto
               </Link>
             </Button>

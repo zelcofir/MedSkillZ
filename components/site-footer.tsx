@@ -38,10 +38,10 @@ function FacebookIcon({ className }: { className?: string }) {
 }
 
 const footerLinks = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Servicios", href: "#servicios" },
-  { label: "Investigación", href: "#convocatoria" },
-  { label: "Nosotros", href: "#nosotros" },
+  { label: "Inicio", href: "/#inicio" },
+  { label: "Servicios", href: "/#servicios" },
+  { label: "Investigación", href: "/#convocatoria" },
+  { label: "Nosotros", href: "/#nosotros" },
 ]
 
 const socialLinks = [
