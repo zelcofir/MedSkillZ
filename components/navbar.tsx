@@ -11,7 +11,6 @@ const navLinks = [
   { label: "Inicio", href: "/#inicio" },
   { label: "Servicios", href: "/#servicios" },
   { label: "Investigación", href: "/#convocatoria" },
-  { label: "Tesis", href: "/pricing" },
   { label: "Nosotros", href: "/#nosotros" },
 ]
 

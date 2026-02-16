@@ -3,6 +3,7 @@ import { HeroCarousel } from "@/components/hero-carousel"
 import { ServicesSection } from "@/components/services-section"
 import { ConvocatoriaBanner } from "@/components/convocatoria-banner"
 import { TrayectoriaSection } from "@/components/trayectoria-section"
+import { MembersSection } from "@/components/members-section"
 import { SiteFooter } from "@/components/site-footer"
 import { Contact } from "@/components/contact"
 
@@ -14,6 +15,7 @@ export default function Page() {
       <ServicesSection />
       <ConvocatoriaBanner />
       <TrayectoriaSection />
+      <MembersSection />
       <Contact/>
       <SiteFooter />
     </main>
