@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import Image from "next/image"
-import Link from "next/link"
 import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -20,7 +19,7 @@ export function Navbar() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
-        <Link href="/#inicio" className="flex items-center gap-2">
+        <a href="/#inicio" className="flex items-center gap-2">
           <Image
             src="/logo1.png"
             alt="MedSkillz logo"
@@ -28,25 +27,25 @@ export function Navbar() {
             height={48}
             className="h-12 w-auto"
           />
-        </Link>
+        </a>
 
         {/* Desktop Nav */}
         <ul className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
             <li key={link.href}>
-              <Link
+              <a
                 href={link.href}
                 className="text-sm font-medium text-foreground/70 transition-colors hover:text-primary"
               >
                 {link.label}
-              </Link>
+              </a>
             </li>
           ))}
         </ul>
 
         <div className="hidden md:block">
           <Button asChild className="bg-primary text-primary-foreground hover:bg-primary/90">
-            <Link href="/#contacto">Contacto</Link>
+            <a href="/#contacto">Contacto</a>
           </Button>
         </div>
 
@@ -71,20 +70,20 @@ export function Navbar() {
         <ul className="flex flex-col gap-4 px-6 pb-6">
           {navLinks.map((link) => (
             <li key={link.href}>
-              <Link
+              <a
                 href={link.href}
                 className="text-sm font-medium text-foreground/70 transition-colors hover:text-primary"
                 onClick={() => setMobileOpen(false)}
               >
                 {link.label}
-              </Link>
+              </a>
             </li>
           ))}
           <li>
             <Button asChild className="w-full bg-primary text-primary-foreground hover:bg-primary/90">
-              <Link href="/#contacto" onClick={() => setMobileOpen(false)}>
+              <a href="/#contacto" onClick={() => setMobileOpen(false)}>
                 Contacto
-              </Link>
+              </a>
             </Button>
           </li>
         </ul>
