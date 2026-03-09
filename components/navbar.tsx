@@ -11,6 +11,7 @@ const navLinks = [
   { label: "Servicios", href: "/#servicios" },
   { label: "Investigación", href: "/#convocatoria" },
   { label: "Nosotros", href: "/#nosotros" },
+  { label: "Aula Virtual", href: "/aula-virtual" },
 ]
 
 export function Navbar() {
