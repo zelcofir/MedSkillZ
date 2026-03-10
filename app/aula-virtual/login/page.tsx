@@ -9,7 +9,16 @@ import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { toast } from 'sonner'
-import { LogIn, UserPlus, Loader2 } from 'lucide-react'
+import { LogIn, UserPlus, Loader2, Mail } from 'lucide-react'
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog"
 
 export default function LoginPage() {
     const [activeTab, setActiveTab] = useState('login')
@@ -17,6 +26,7 @@ export default function LoginPage() {
     const [password, setPassword] = useState('')
     const [fullName, setFullName] = useState('')
     const [isLoading, setIsLoading] = useState(false)
+    const [showConfirmDialog, setShowConfirmDialog] = useState(false)
     const router = useRouter()
     const supabase = createClient()
 
@@ -97,13 +107,17 @@ export default function LoginPage() {
 
         if (error) {
             console.error('Error de registro:', error)
-            toast.error(error.message)
+            if (error.message.includes('rate limit exceeded')) {
+                toast.error('Se ha excedido el límite de correos. Por favor, espera unos minutos o desactiva la confirmación por correo en Supabase.')
+            } else {
+                toast.error(error.message)
+            }
             setIsLoading(false)
         } else {
             console.log('Registro exitoso (pendiente confirmación):', data.user?.id)
             // Success! No need to insert profile here because RLS will block it if email confirmation is required.
             // Profile will be created upon first successful login in handleLogin.
-            toast.success('¡Registro casi completo! Por favor, revisa tu correo para confirmar tu cuenta. Serás redirigido aquí para iniciar sesión.')
+            setShowConfirmDialog(true)
             setIsLoading(false)
             setFullName('')
             setEmail('')
@@ -210,6 +224,28 @@ export default function LoginPage() {
                     </p>
                 </CardFooter>
             </Card>
+
+            <AlertDialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+                <AlertDialogContent className="rounded-2xl border-none shadow-2xl">
+                    <AlertDialogHeader className="items-center text-center">
+                        <div className="mb-4 h-16 w-16 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                            <Mail size={32} />
+                        </div>
+                        <AlertDialogTitle className="text-2xl font-bold">¡Revisa tu correo!</AlertDialogTitle>
+                        <AlertDialogDescription className="text-slate-600 text-base">
+                            Te hemos enviado un enlace de confirmación a tu correo electrónico.
+                            <br /><br />
+                            Por favor, haz clic en el enlace para activar tu cuenta antes de intentar iniciar sesión.
+                            <strong> Serás redirigido aquí automáticamente.</strong>
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter className="sm:justify-center mt-2">
+                        <AlertDialogAction className="bg-primary hover:bg-primary/90 text-white rounded-full px-8 py-6 w-full sm:w-auto">
+                            Entendido
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
         </div>
     )
 }
