@@ -22,41 +22,63 @@ export default function LoginPage() {
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault()
+
+        if (!email || !password) {
+            toast.error('Por favor, completa todos los campos.')
+            return
+        }
+
         setIsLoading(true)
         console.log('Intentando login para:', email)
-        const { error, data } = await supabase.auth.signInWithPassword({ email, password })
 
-        if (error) {
-            console.error('Error de login:', error)
-            toast.error(error.message)
-            setIsLoading(false)
-        } else {
-            console.log('Login exitoso, usuario:', data.user?.id)
-            // Check if profile exists, if not create it
-            const { data: { user } } = await supabase.auth.getUser()
-            if (user) {
-                const { data: profile } = await supabase.from('profiles').select('id').eq('id', user.id).single()
-                if (!profile) {
-                    console.log('Creando perfil para nuevo usuario...')
-                    await supabase.from('profiles').insert({
-                        id: user.id,
-                        full_name: user.user_metadata.full_name || 'Estudiante',
-                        role: 'student'
-                    })
+        try {
+            const { error, data } = await supabase.auth.signInWithPassword({ email, password })
+
+            if (error) {
+                console.error('Error de login:', error)
+                if (error.message === 'Invalid login credentials') {
+                    toast.error('Información no registrada o error en el usuario y/o contraseña.')
+                } else if (error.message === 'Email not confirmed') {
+                    toast.error('Por favor, confirma tu correo electrónico antes de entrar.')
+                } else {
+                    toast.error(error.message)
                 }
-            }
+            } else {
+                console.log('Login exitoso, usuario:', data.user?.id)
+                // Check if profile exists, if not create it
+                const { data: { user } } = await supabase.auth.getUser()
+                if (user) {
+                    const { data: profile } = await supabase.from('profiles').select('id').eq('id', user.id).single()
+                    if (!profile) {
+                        console.log('Creando perfil para nuevo usuario...')
+                        await supabase.from('profiles').insert({
+                            id: user.id,
+                            full_name: user.user_metadata.full_name || 'Estudiante',
+                            role: 'student'
+                        })
+                    }
+                }
 
-            toast.success('¡Bienvenido de nuevo!')
-            router.push('/aula-virtual')
-            router.refresh()
+                toast.success('¡Bienvenido de nuevo!')
+                router.push('/aula-virtual')
+                router.refresh()
+            }
+        } catch (err) {
+            console.error('Error inesperado:', err)
+            toast.error('Ocurrió un error inesperado al intentar iniciar sesión.')
+        } finally {
+            setIsLoading(false)
         }
     }
 
     const handleSignUp = async (e: React.FormEvent) => {
         e.preventDefault()
 
-        if (password.length < 6) {
-            toast.error('La contraseña debe tener al menos 6 caracteres.')
+        // Password complexity regex: min 6 chars, 1 upper, 1 lower, 1 number, 1 special
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/
+
+        if (!passwordRegex.test(password)) {
+            toast.error('La contraseña debe tener al menos 6 caracteres, incluir una mayúscula, una minúscula, un número y un carácter especial (@$!%*?&).')
             return
         }
 
@@ -69,6 +91,7 @@ export default function LoginPage() {
                 data: {
                     full_name: fullName,
                 },
+                emailRedirectTo: `${window.location.origin}/auth/callback`,
             },
         })
 
@@ -80,7 +103,7 @@ export default function LoginPage() {
             console.log('Registro exitoso (pendiente confirmación):', data.user?.id)
             // Success! No need to insert profile here because RLS will block it if email confirmation is required.
             // Profile will be created upon first successful login in handleLogin.
-            toast.success('¡Registro casi completo! Por favor, revisa tu correo para confirmar tu cuenta antes de iniciar sesión.')
+            toast.success('¡Registro casi completo! Por favor, revisa tu correo para confirmar tu cuenta. Serás redirigido aquí para iniciar sesión.')
             setIsLoading(false)
             setFullName('')
             setEmail('')
@@ -163,6 +186,7 @@ export default function LoginPage() {
                                 </div>
                                 <div className="space-y-2">
                                     <Label htmlFor="reg-password">Contraseña</Label>
+                                    <p className="text-[10px] text-slate-400">Mínimo 6 caracteres, mayúscula, minúscula, número y símbolo (@$!%*?&)</p>
                                     <Input
                                         id="reg-password"
                                         type="password"
