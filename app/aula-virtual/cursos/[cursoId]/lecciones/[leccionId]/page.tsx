@@ -94,18 +94,38 @@ export default async function LessonPage({
         'use server'
         const content = formData.get('content') as string
         const parentId = formData.get('parentId') as string
-        if (!content) return
+        console.log('--- DEBUG postComment ---')
+        console.log('Content:', content)
+        console.log('ParentId:', parentId)
+        console.log('LeccionId:', leccionId)
+
+        if (!content) {
+            console.log('Abortando: No hay contenido')
+            return
+        }
 
         const supabase = await createClient()
         const { data: { user } } = await supabase.auth.getUser()
-        if (!user) return
 
-        await supabase.from('comments').insert({
+        if (!user) {
+            console.log('Abortando: No hay usuario autenticado')
+            return
+        }
+
+        console.log('User ID:', user.id)
+
+        const { error } = await supabase.from('comments').insert({
             lesson_id: leccionId,
             user_id: user.id,
             content,
             parent_id: parentId || null
         })
+
+        if (error) {
+            console.error('Error insertando comentario:', error)
+        } else {
+            console.log('Comentario insertado con éxito')
+        }
 
         revalidatePath(`/aula-virtual/cursos/${cursoId}/lecciones/${leccionId}`)
     }
@@ -116,7 +136,13 @@ export default async function LessonPage({
         .select('role')
         .eq('id', user.id)
         .single()
+
+    console.log('--- DEBUG Role Check ---')
+    console.log('User ID:', user.id)
+    console.log('Profile Role:', currentUserProfile?.role)
+
     const isTeacher = currentUserProfile?.role === 'teacher'
+    console.log('Is Teacher:', isTeacher)
 
     return (
         <div className="space-y-8 animate-in fade-in duration-500 max-w-4xl mx-auto">
@@ -161,7 +187,7 @@ export default async function LessonPage({
             <div className="space-y-6 pt-6">
                 <div className="flex items-center gap-2">
                     <MessageSquare className="text-primary" size={24} />
-                    <h2 className="text-2xl font-bold text-slate-900">Comentarios</h2>
+                    <h2 className="text-2xl font-bold text-slate-900">Preguntas y Dudas</h2>
                 </div>
 
                 <Card className="border-slate-200 shadow-sm overflow-hidden">
@@ -169,12 +195,12 @@ export default async function LessonPage({
                         <form action={postComment} className="space-y-4">
                             <Textarea
                                 name="content"
-                                placeholder="Escribe tu duda o comentario sobre esta lección..."
+                                placeholder="Escribe tu pregunta o duda sobre esta lección..."
                                 className="min-h-[100px] border-slate-200 focus:border-primary focus:ring-primary bg-slate-50/50"
                                 required
                             />
                             <div className="flex justify-end">
-                                <Button type="submit" className="bg-primary hover:bg-primary/90 text-white rounded-full px-6">Publicar Comentario</Button>
+                                <Button type="submit" className="bg-primary hover:bg-primary/90 text-white rounded-full px-6">Enviar Pregunta</Button>
                             </div>
                         </form>
                     </CardContent>
@@ -248,7 +274,7 @@ export default async function LessonPage({
                     ) : (
                         <div className="text-center py-16 border-2 border-dashed border-slate-100 rounded-3xl bg-slate-50/50">
                             <MessageSquare className="mx-auto h-12 w-12 text-slate-200 mb-4" />
-                            <p className="text-slate-400 text-sm font-medium italic">Sé el primero en comentar esta lección.</p>
+                            <p className="text-slate-400 text-sm font-medium italic">Nadie ha hecho preguntas aún. Sé el primero.</p>
                         </div>
                     )}
                 </div>

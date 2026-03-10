@@ -23,12 +23,29 @@ export default function LoginPage() {
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault()
         setIsLoading(true)
-        const { error } = await supabase.auth.signInWithPassword({ email, password })
+        console.log('Intentando login para:', email)
+        const { error, data } = await supabase.auth.signInWithPassword({ email, password })
 
         if (error) {
+            console.error('Error de login:', error)
             toast.error(error.message)
             setIsLoading(false)
         } else {
+            console.log('Login exitoso, usuario:', data.user?.id)
+            // Check if profile exists, if not create it
+            const { data: { user } } = await supabase.auth.getUser()
+            if (user) {
+                const { data: profile } = await supabase.from('profiles').select('id').eq('id', user.id).single()
+                if (!profile) {
+                    console.log('Creando perfil para nuevo usuario...')
+                    await supabase.from('profiles').insert({
+                        id: user.id,
+                        full_name: user.user_metadata.full_name || 'Estudiante',
+                        role: 'student'
+                    })
+                }
+            }
+
             toast.success('¡Bienvenido de nuevo!')
             router.push('/aula-virtual')
             router.refresh()
@@ -37,7 +54,14 @@ export default function LoginPage() {
 
     const handleSignUp = async (e: React.FormEvent) => {
         e.preventDefault()
+
+        if (password.length < 6) {
+            toast.error('La contraseña debe tener al menos 6 caracteres.')
+            return
+        }
+
         setIsLoading(true)
+        console.log('Intentando registro para:', email)
         const { error, data } = await supabase.auth.signUp({
             email,
             password,
@@ -49,19 +73,18 @@ export default function LoginPage() {
         })
 
         if (error) {
+            console.error('Error de registro:', error)
             toast.error(error.message)
             setIsLoading(false)
         } else {
-            // Explicitly create profile entry if account creation worked
-            if (data.user) {
-                await supabase.from('profiles').insert({
-                    id: data.user.id,
-                    full_name: fullName,
-                    role: 'student'
-                })
-            }
-            toast.success('¡Registro exitoso! Ahora puedes iniciar sesión.')
+            console.log('Registro exitoso (pendiente confirmación):', data.user?.id)
+            // Success! No need to insert profile here because RLS will block it if email confirmation is required.
+            // Profile will be created upon first successful login in handleLogin.
+            toast.success('¡Registro casi completo! Por favor, revisa tu correo para confirmar tu cuenta antes de iniciar sesión.')
             setIsLoading(false)
+            setFullName('')
+            setEmail('')
+            setPassword('')
             setActiveTab('login') // Switch to login tab automatically
         }
     }
